@@ -452,7 +452,7 @@ private int tryMain(size_t argc, const(char)** argv)
             }
             else if (strcmp(p + 1, "fPIC") == 0)
             {
-                static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+                static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
                 {
                     global.params.pic = 1;
                 }
@@ -1105,7 +1105,7 @@ Language changes listed by -transition=id:
     {
         global.params.pic = 1;
     }
-    static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+    static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
     {
         if (global.params.lib && global.params.dll)
             error(Loc(), "cannot mix -lib and -shared");
@@ -1256,7 +1256,7 @@ Language changes listed by -transition=id:
                 libmodules.push(files[i]);
                 continue;
             }
-            static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+            static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
             {
                 if (FileName.equals(ext, global.dll_ext))
                 {
@@ -1905,7 +1905,7 @@ private void setDefaultLibrary()
             else
                 global.params.defaultlibname = "phobos";
         }
-        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             global.params.defaultlibname = "libphobos2.a";
         }
@@ -1967,6 +1967,13 @@ private void addDefaultVersionIdentifiers()
         VersionCondition.addPredefinedGlobalIdent("OpenBSD");
         VersionCondition.addPredefinedGlobalIdent("ELFv1");
         global.params.isOpenBSD = true;
+    }
+    else static if (TARGET_DRAGONFLYBSD)
+    {
+        VersionCondition.addPredefinedGlobalIdent("Posix");
+        VersionCondition.addPredefinedGlobalIdent("FreeBSD");
+        VersionCondition.addPredefinedGlobalIdent("ELFv1");
+        global.params.isFreeBSD = true;
     }
     else static if (TARGET_SOLARIS)
     {

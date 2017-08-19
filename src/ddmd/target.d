@@ -436,7 +436,7 @@ struct Target
 
     extern (C++) static const(char)* toCppMangle(Dsymbol s)
     {
-        static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
             return toCppMangleItanium(s);
         else static if (TARGET_WINDOS)
             return toCppMangleMSVC(s);
@@ -446,7 +446,7 @@ struct Target
 
     extern (C++) static const(char)* cppTypeInfoMangle(ClassDeclaration cd)
     {
-        static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
             return cppTypeInfoMangleItanium(cd);
         else static if (TARGET_WINDOS)
             return cppTypeInfoMangleMSVC(cd);
