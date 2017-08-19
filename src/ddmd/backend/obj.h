@@ -96,7 +96,7 @@ class Obj
 
     static void gotref(symbol *s);
 
-#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS
     static unsigned addstr(Outbuffer *strtab, const char *);
     static symbol *getGOTsym();
     static void refGOTsym();

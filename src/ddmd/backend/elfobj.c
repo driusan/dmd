@@ -50,7 +50,7 @@
 #  define ELFOSABI ELFOSABI_LINUX
 # elif TARGET_FREEBSD
 #  define ELFOSABI ELFOSABI_FREEBSD
-# elif TARGET_SOLARIS
+# elif TARGET_SOLARIS || TARGET_DRAGONFLYBSD
 #  define ELFOSABI ELFOSABI_SYSV
 # elif TARGET_OPENBSD
 #  define ELFOSABI ELFOSABI_OPENBSD
@@ -82,7 +82,7 @@ void addSegmentToComdat(segidx_t seg, segidx_t comdatseg);
  * If set the compiler requires full druntime support of the new
  * section registration.
  */
-#define REQUIRE_DSO_REGISTRY (DMDV2 && (TARGET_LINUX || TARGET_FREEBSD))
+#define REQUIRE_DSO_REGISTRY (DMDV2 && (TARGET_LINUX || TARGET_FREEBSD || TARGET_DRAGONFLYBSD))
 
 /******
  * FreeBSD uses ELF, but the linker crashes with Elf comdats with the following message:
@@ -2235,7 +2235,7 @@ char *obj_mangle2(Symbol *s,char *dest, size_t *destlen)
             }
             break;
         case mTYman_std:
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS
             if (tyfunc(s->ty()) && !variadic(s->Stype))
 #else
             if (!(config.flags4 & CFG4oldstdmangle) &&

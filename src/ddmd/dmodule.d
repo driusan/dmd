@@ -1428,8 +1428,8 @@ struct ModuleDeclaration
     {
         this.loc = loc;
         this.packages = packages;
-        this.id = id;
-        this.msg = msg;
+	this.id = id;
+	this.msg = msg;
         this.isdeprecated = isdeprecated;
     }
 

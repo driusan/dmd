@@ -29,6 +29,7 @@ enum TARGET_LINUX   = xversion!`linux`;
 enum TARGET_OSX     = xversion!`OSX`;
 enum TARGET_FREEBSD = xversion!`FreeBSD`;
 enum TARGET_OPENBSD = xversion!`OpenBSD`;
+enum TARGET_DRAGONFLYBSD = xversion!`DragonFlyBSD`;
 enum TARGET_SOLARIS = xversion!`Solaris`;
 enum TARGET_WINDOS  = xversion!`Windows`;
 
@@ -94,6 +95,7 @@ struct Param
     bool isWindows;         // generate code for Windows
     bool isFreeBSD;         // generate code for FreeBSD
     bool isOpenBSD;         // generate code for OpenBSD
+    bool isDragonFlyBSD;         // generate code for OpenBSD
     bool isSolaris;         // generate code for Solaris
     bool hasObjectiveC;     // target supports Objective-C
     bool mscoff;            // for Win32: write COFF object files instead of OMF
@@ -292,7 +294,7 @@ struct Global
         {
             obj_ext = "obj";
         }
-        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             obj_ext = "o";
         }
@@ -304,7 +306,7 @@ struct Global
         {
             lib_ext = "lib";
         }
-        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             lib_ext = "a";
         }
@@ -316,7 +318,7 @@ struct Global
         {
             dll_ext = "dll";
         }
-        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             dll_ext = "so";
         }
@@ -332,7 +334,7 @@ struct Global
         {
             run_noext = false;
         }
-        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             // Allow 'script' D source files to have no extension.
             run_noext = true;

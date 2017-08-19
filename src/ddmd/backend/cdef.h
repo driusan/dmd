@@ -187,13 +187,18 @@ One and only one of these macros must be set by the makefile:
 #endif
 
 // Set to 1 using the makefile
+#ifndef TARGET_DRAGONFLYBSD
+#define TARGET_DRAGONFLYBSD  0               // target is an OpenBSD executable
+#endif
+
+// Set to 1 using the makefile
 #ifndef TARGET_SOLARIS
 #define TARGET_SOLARIS  0               // target is a Solaris executable
 #endif
 
 // This is the default
 #ifndef TARGET_WINDOS
-#define TARGET_WINDOS   (!(TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS))
+#define TARGET_WINDOS   (!(TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS))
 #endif
 
 #if __GNUC__
@@ -519,7 +524,7 @@ enum
 #define REGMASK         0xFFFF
 
 // targ_llong is also used to store host pointers, so it should have at least their size
-#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX || MARS
+#if TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS || TARGET_OSX || MARS
 typedef targ_llong      targ_ptrdiff_t; /* ptrdiff_t for target machine  */
 typedef targ_ullong     targ_size_t;    /* size_t for the target machine */
 #else
@@ -542,14 +547,14 @@ typedef targ_uns        targ_size_t;    /* size_t for the target machine */
 #define OMFOBJ          TARGET_WINDOS
 #endif
 #ifndef ELFOBJ
-#define ELFOBJ          (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+#define ELFOBJ          (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
 #endif
 #ifndef MACHOBJ
 #define MACHOBJ         TARGET_OSX
 #endif
 
 #define SYMDEB_CODEVIEW TARGET_WINDOS
-#define SYMDEB_DWARF    (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS || TARGET_OSX)
+#define SYMDEB_DWARF    (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS || TARGET_OSX)
 
 #define TOOLKIT_H
 

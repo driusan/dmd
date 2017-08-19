@@ -290,6 +290,7 @@ private elem *callfunc(Loc loc,
         if ((global.params.isLinux ||
              global.params.isOSX ||
              global.params.isFreeBSD ||
+             global.params.isDragonFlyBSD ||
              global.params.isSolaris) && tf.linkage != LINKd)
         {
                 // ehidden goes last on Linux/OSX C++
@@ -1986,7 +1987,7 @@ elem *toElem(Expression e, IRState *irs)
                 {
                     ts = symbol_genauto(Type_toCtype(t1));
                     int rtl;
-                    if (global.params.isLinux || global.params.isFreeBSD || global.params.isSolaris ||
+                    if (global.params.isLinux || global.params.isFreeBSD || global.params.isDragonFlyBSD || global.params.isSolaris ||
                         global.params.is64bit && global.params.isWindows)
                         rtl = RTLSYM__DINVARIANT;
                     else

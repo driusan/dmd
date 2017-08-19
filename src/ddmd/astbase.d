@@ -6354,7 +6354,7 @@ struct ASTBase
             {
                 return Type.tchar.pointerTo();
             }
-            else if (global.params.isLinux || global.params.isFreeBSD || global.params.isOpenBSD || global.params.isSolaris || global.params.isOSX)
+            else if (global.params.isLinux || global.params.isFreeBSD || global.params.isOpenBSD || global.params.isDragonFlyBSD || global.params.isSolaris || global.params.isOSX)
             {
                 if (global.params.is64bit)
                 {
