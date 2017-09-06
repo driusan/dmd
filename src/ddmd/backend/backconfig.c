@@ -178,6 +178,25 @@ void out_config_init(
     config.objfmt = OBJ_ELF;
     config.ehmethod = EH_DM;
 #endif
+#if TARGET_DRAGONFLYBSD
+    if (model == 64)
+    {   config.exe = EX_FREEBSD64;
+        config.ehmethod = EH_DWARF;
+        config.fpxmmregs = TRUE;
+        config.avx = avx;
+    }
+    else
+    {
+	assert(0);
+    }
+    config.flags |= CFGnoebp;
+    if (!exe)
+    {
+       // config.flags3 |= CFG3pic;
+       // config.flags |= CFGalwaysframe; // PIC needs a frame for TLS fixups
+    }
+    config.objfmt = OBJ_ELF;
+#endif
 #if TARGET_SOLARIS
     if (model == 64)
     {   config.exe = EX_SOLARIS64;

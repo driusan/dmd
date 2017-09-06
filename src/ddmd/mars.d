@@ -380,7 +380,6 @@ private int tryMain(size_t argc, const(char)** argv)
 
     if (global.params.usage)
     {
-<<<<<<< HEAD
         usage();
         return EXIT_SUCCESS;
     }
@@ -394,207 +393,6 @@ private int tryMain(size_t argc, const(char)** argv)
     if (global.params.mcpuUsage)
     {
         printf("
-=======
-        const(char)* p = arguments[i];
-        if (*p == '-')
-        {
-            if (strcmp(p + 1, "allinst") == 0)
-                global.params.allInst = true;
-            else if (strcmp(p + 1, "de") == 0)
-                global.params.useDeprecated = 0;
-            else if (strcmp(p + 1, "d") == 0)
-                global.params.useDeprecated = 1;
-            else if (strcmp(p + 1, "dw") == 0)
-                global.params.useDeprecated = 2;
-            else if (strcmp(p + 1, "c") == 0)
-                global.params.link = false;
-            else if (memcmp(p + 1, cast(char*)"color", 5) == 0)
-            {
-                global.params.color = true;
-                // Parse:
-                //      -color
-                //      -color=on|off
-                if (p[6] == '=')
-                {
-                    if (strcmp(p + 7, "off") == 0)
-                        global.params.color = false;
-                    else if (strcmp(p + 7, "on") != 0)
-                        goto Lerror;
-                }
-                else if (p[6])
-                    goto Lerror;
-            }
-            else if (memcmp(p + 1, cast(char*)"conf=", 5) == 0)
-            {
-                // ignore, already handled above
-            }
-            else if (memcmp(p + 1, cast(char*)"cov", 3) == 0)
-            {
-                global.params.cov = true;
-                // Parse:
-                //      -cov
-                //      -cov=nnn
-                if (p[4] == '=')
-                {
-                    if (isdigit(cast(char)p[5]))
-                    {
-                        long percent;
-                        errno = 0;
-                        percent = strtol(p + 5, &p, 10);
-                        if (*p || errno || percent > 100)
-                            goto Lerror;
-                        global.params.covPercent = cast(ubyte)percent;
-                    }
-                    else
-                        goto Lerror;
-                }
-                else if (p[4])
-                    goto Lerror;
-            }
-            else if (strcmp(p + 1, "shared") == 0)
-                global.params.dll = true;
-            else if (strcmp(p + 1, "dylib") == 0)
-            {
-                static if (TARGET_OSX)
-                {
-                    Loc loc;
-                    deprecation(loc, "use -shared instead of -dylib");
-                    global.params.dll = true;
-                }
-                else
-                {
-                    goto Lerror;
-                }
-            }
-            else if (strcmp(p + 1, "fPIC") == 0)
-            {
-                static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
-                {
-                    global.params.pic = 1;
-                }
-                else
-                {
-                    goto Lerror;
-                }
-            }
-            else if (strcmp(p + 1, "map") == 0)
-                global.params.map = true;
-            else if (strcmp(p + 1, "multiobj") == 0)
-                global.params.multiobj = true;
-            else if (strcmp(p + 1, "g") == 0)
-                global.params.symdebug = 1;
-            else if (strcmp(p + 1, "gc") == 0)
-            {
-                Loc loc;
-                deprecation(loc, "use -g instead of -gc");
-                global.params.symdebug = 2;
-            }
-            else if (strcmp(p + 1, "gf") == 0)
-            {
-                if (!global.params.symdebug)
-                    global.params.symdebug = 1;
-                global.params.symdebugref = true;
-            }
-            else if (strcmp(p + 1, "gs") == 0)
-                global.params.alwaysframe = true;
-            else if (strcmp(p + 1, "gx") == 0)
-                global.params.stackstomp = true;
-            else if (strcmp(p + 1, "gt") == 0)
-            {
-                error(Loc(), "use -profile instead of -gt");
-                global.params.trace = true;
-            }
-            else if (strcmp(p + 1, "m32") == 0)
-            {
-                global.params.is64bit = false;
-                global.params.mscoff = false;
-            }
-            else if (strcmp(p + 1, "m64") == 0)
-            {
-                global.params.is64bit = true;
-                static if (TARGET_WINDOS)
-                {
-                    global.params.mscoff = true;
-                }
-            }
-            else if (strcmp(p + 1, "m32mscoff") == 0)
-            {
-                static if (TARGET_WINDOS)
-                {
-                    global.params.is64bit = 0;
-                    global.params.mscoff = true;
-                }
-                else
-                {
-                    error(Loc(), "-m32mscoff can only be used on windows");
-                }
-            }
-            else if (strncmp(p + 1, "mscrtlib=", 9) == 0)
-            {
-                static if (TARGET_WINDOS)
-                {
-                    global.params.mscrtlib = p + 10;
-                }
-                else
-                {
-                    error(Loc(), "-mscrtlib");
-                }
-            }
-            else if (memcmp(p + 1, cast(char*)"profile", 7) == 0)
-            {
-                // Parse:
-                //      -profile
-                //      -profile=gc
-                if (p[8] == '=')
-                {
-                    if (strcmp(p + 9, "gc") == 0)
-                        global.params.tracegc = true;
-                    else
-                        goto Lerror;
-                }
-                else if (p[8])
-                    goto Lerror;
-                else
-                    global.params.trace = true;
-            }
-            else if (strcmp(p + 1, "v") == 0)
-                global.params.verbose = true;
-            else if (strcmp(p + 1, "vcg-ast") == 0)
-                global.params.vcg_ast = true;
-            else if (strcmp(p + 1, "vtls") == 0)
-                global.params.vtls = true;
-            else if (strcmp(p + 1, "vcolumns") == 0)
-                global.params.showColumns = true;
-            else if (strcmp(p + 1, "vgc") == 0)
-                global.params.vgc = true;
-            else if (memcmp(p + 1, cast(char*)"verrors", 7) == 0)
-            {
-                if (p[8] == '=' && isdigit(cast(char)p[9]))
-                {
-                    long num;
-                    errno = 0;
-                    num = strtol(p + 9, &p, 10);
-                    if (*p || errno || num > INT_MAX)
-                        goto Lerror;
-                    global.errorLimit = cast(uint)num;
-                }
-                else if (memcmp(p + 9, cast(char*)"spec", 4) == 0)
-                {
-                    global.params.showGaggedErrors = true;
-                }
-                else
-                    goto Lerror;
-            }
-            else if (memcmp(p + 1, "mcpu".ptr, 4) == 0)
-            {
-                // Parse:
-                //      -mcpu=identifier
-                if (p[5] == '=')
-                {
-                    if (strcmp(p + 6, "?") == 0)
-                    {
-                        printf("
->>>>>>> Add DragonFly target to DMD backend.
 CPU architectures supported by -mcpu=id:
   =?             list information on all architecture choices
   =baseline      use default architecture as determined by target
@@ -682,7 +480,7 @@ Language changes listed by -transition=id:
     {
         global.params.pic = 1;
     }
-    static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+    static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
     {
         if (global.params.lib && global.params.dll)
             error(Loc(), "cannot mix -lib and -shared");
@@ -833,7 +631,7 @@ Language changes listed by -transition=id:
                 libmodules.push(files[i]);
                 continue;
             }
-            static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+            static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
             {
                 if (FileName.equals(ext, global.dll_ext))
                 {
@@ -1036,7 +834,6 @@ Language changes listed by -transition=id:
             fprintf(global.stdmsg, "importall %s\n", m.toChars());
         m.importAll(null);
     }
-<<<<<<< HEAD
     if (global.errors)
         fatal();
 
@@ -1044,9 +841,6 @@ Language changes listed by -transition=id:
 
     // Do semantic analysis
     for (size_t i = 0; i < modules.dim; i++)
-=======
-    static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
->>>>>>> Add DragonFly target to DMD backend.
     {
         Module m = modules[i];
         if (global.params.verbose)
@@ -1153,68 +947,7 @@ Language changes listed by -transition=id:
         }
         else
         {
-<<<<<<< HEAD
             /* The filename generation code here should be harmonized with Module::setOutfile()
-=======
-            /* Deduce what to do with a file based on its extension
-             */
-            if (FileName.equals(ext, global.obj_ext))
-            {
-                global.params.objfiles.push(files[i]);
-                libmodules.push(files[i]);
-                continue;
-            }
-            if (FileName.equals(ext, global.lib_ext))
-            {
-                global.params.libfiles.push(files[i]);
-                libmodules.push(files[i]);
-                continue;
-            }
-            static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
-            {
-                if (FileName.equals(ext, global.dll_ext))
-                {
-                    global.params.dllfiles.push(files[i]);
-                    libmodules.push(files[i]);
-                    continue;
-                }
-            }
-            if (strcmp(ext, global.ddoc_ext) == 0)
-            {
-                global.params.ddocfiles.push(files[i]);
-                continue;
-            }
-            if (FileName.equals(ext, global.json_ext))
-            {
-                global.params.doJsonGeneration = true;
-                global.params.jsonfilename = files[i];
-                continue;
-            }
-            if (FileName.equals(ext, global.map_ext))
-            {
-                global.params.mapfile = files[i];
-                continue;
-            }
-            static if (TARGET_WINDOS)
-            {
-                if (FileName.equals(ext, "res"))
-                {
-                    global.params.resfile = files[i];
-                    continue;
-                }
-                if (FileName.equals(ext, "def"))
-                {
-                    global.params.deffile = files[i];
-                    continue;
-                }
-                if (FileName.equals(ext, "exe"))
-                {
-                    assert(0); // should have already been handled
-                }
-            }
-            /* Examine extension to see if it is a valid
-             * D source file extension
->>>>>>> Add DragonFly target to DMD backend.
              */
             const(char)* jsonfilename;
             if (name && *name)
@@ -1547,7 +1280,7 @@ private void setDefaultLibrary()
             else
                 global.params.defaultlibname = "phobos";
         }
-        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+        else static if (TARGET_LINUX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
         {
             global.params.defaultlibname = "libphobos2.a";
         }
@@ -1609,6 +1342,13 @@ private void addDefaultVersionIdentifiers()
         VersionCondition.addPredefinedGlobalIdent("OpenBSD");
         VersionCondition.addPredefinedGlobalIdent("ELFv1");
         global.params.isOpenBSD = true;
+    }
+    else static if (TARGET_DRAGONFLYBSD)
+    {
+        VersionCondition.addPredefinedGlobalIdent("Posix");
+        VersionCondition.addPredefinedGlobalIdent("DragonFlyBSD");
+        VersionCondition.addPredefinedGlobalIdent("ELFv1");
+        global.params.isDragonFlyBSD = true;
     }
     else static if (TARGET_SOLARIS)
     {
@@ -1851,7 +1591,7 @@ private bool parseCommandLine(const ref Strings arguments, const size_t argc, re
             }
             else if (strcmp(p + 1, "fPIC") == 0)
             {
-                static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_SOLARIS)
+                static if (TARGET_LINUX || TARGET_OSX || TARGET_FREEBSD || TARGET_OPENBSD || TARGET_DRAGONFLYBSD || TARGET_SOLARIS)
                 {
                     params.pic = 1;
                 }
